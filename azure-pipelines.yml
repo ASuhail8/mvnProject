@@ -20,12 +20,13 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
-- task: CopyFiles@2
+- task: Docker@2
   inputs:
-    Contents: '**/*.war'
-    TargetFolder: '$(build.artifactstagingdirectory)'
-- task: PublishBuildArtifacts@1
+    containerRegistry: 'docker-asuhail8'
+    command: 'login'
+- task: Docker@2
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+    containerRegistry: 'docker-asuhail8'
+    repository: 'asuhail8 / mavenproject'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
